@@ -51,7 +51,7 @@ export const uploadRepo = async (req: express.Request, res: express.Response): P
         await simpleGit().clone(repoUrl, repoPath);
         console.log("✅ Repository cloned successfully.");
 
-        const files = fetchFiles(repoPath);
+        const files = await fetchFiles(repoPath);
         console.log(`📂 Found ${files.length} files. Uploading...`);
 
         for(const file of files){

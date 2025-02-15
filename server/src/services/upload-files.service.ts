@@ -1,4 +1,4 @@
-import fs from "fs/promises"; 
+import fs from "fs"; 
 import { s3 } from "../config/s3";
 
 const BUCKET_NAME = process.env.AWS_BUCKET_NAME;
@@ -10,9 +10,7 @@ if (!BUCKET_NAME) {
 
 export const uploadFiles = async (fileKey: string, localFilePath: string) => {
   try {
-    await fs.access(localFilePath);
-
-    const fileContent = await fs.readFile(localFilePath);
+    const fileContent = await fs.readFileSync(localFilePath);
 
     const response = await s3.upload({
       Body: fileContent,

@@ -1,37 +1,10 @@
 import express from 'express';
-import { createClient } from 'redis';
 import { randomUUID } from 'crypto';
 import simpleGit from 'simple-git';
 import { fetchFiles } from '../services/fetch-files.service';
 import path from 'path';
 import { uploadFiles } from '../services/upload-files.service';
-
-const subscriber = createClient({
-    password: process.env.REDIS_PASSWORD,
-    socket: {
-        host: process.env.REDIS_HOST,
-        port: parseInt(process.env.REDIS_PORT || "6379"),
-    }
-});
-
-const publisher = createClient({ 
-    password: process.env.REDIS_PASSWORD,
-    socket: {
-        host: process.env.REDIS_HOST,
-        port: parseInt(process.env.REDIS_PORT || "6379"),
-    }
-});
-
-
-async function connectRedis() {
-    try {
-        await subscriber.connect();
-        await publisher.connect();
-        console.log("✅ Redis clients connected.");
-    } catch (error) {
-        console.error("❌ Error connecting to Redis:", error);
-    }
-}
+import { publisher, subscriber, connectRedis } from "../config/redis"
 
 connectRedis();
 
